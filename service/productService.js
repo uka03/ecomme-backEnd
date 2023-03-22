@@ -7,14 +7,17 @@ export async function getProducts() {
 }
 
 export async function updateProduct({ id, data }) {
-  let result = Product.updateOne({ _id: id }, { $set: { data } })
-  console.log(id, data)
-  return await result
+  let result = Product.updateOne({ _id: id }, { $set: { ...data } });
+  console.log(id, data);
+  return await result;
+}
+
+export async function addProduct(object) {
+  let result = Product.insertMany({ ...object });
+  return await result;
 }
 
 export async function deleteProducts(id) {
-  let result = Product.deleteOne({ _id: id })
-  return await result
+  let result = Product.deleteOne({ _id: id });
+  return await result;
 }
-
-
