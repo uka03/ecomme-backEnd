@@ -1,9 +1,20 @@
 import Product from "../schema/productSchema.js";
 import "../config/mongodb_config.js";
 
-export async function getProducts() {
-  let data = Product.find();
-  return await data;
+export async function getProducts(query) {
+  let { limit, filter, id } = query;
+
+  if (filter) {
+    let data = Product.find({ category: filter }).limit(limit);
+    return await data;
+  } else {
+    let data = Product.find({}).limit(limit);
+    return await data;
+  }
+}
+export async function getProduct(query) {
+  let data = await Product.findOne({ _id: query.id });
+  return data;
 }
 
 export async function updateProduct({ id, data }) {

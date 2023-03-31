@@ -2,6 +2,7 @@ import express from "express";
 import {
   addProduct,
   deleteProducts,
+  getProduct,
   getProducts,
   updateProduct,
 } from "../service/productService.js";
@@ -13,15 +14,25 @@ const Product = express.Router();
 
 Product.use(express.json());
 
+Product.get("/products", async (req, res) => {
+  let query = req.query;
+
+  let data = await getProducts(query);
+  if (data) {
+    res.status(200).send(data);
+  }
+});
 Product.get("/product", async (req, res) => {
-  let data = await getProducts();
+  let query = req.query;
+
+  let data = await getProduct(query);
   if (data) {
     res.status(200).send(data);
   }
 });
 
 const storage = multer.diskStorage({
-  destination: (reg, file, cb) => {
+  destination: (req, file, cb) => {
     cb(null, "/tmp");
   },
   filename: (req, file, cb) => {
